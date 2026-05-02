@@ -1,31 +1,36 @@
 # AWS Cloud Student Project Guide
 
-This project is a skeleton designed for students taking AWS courses. It demonstrates a full-stack application lifecycle: **Frontend (React) -> Backend (Express/Node.js) -> Storage (Multer/Filesystem) -> Database (In-memory)**.
+This project is a skeleton designed for students taking AWS courses. It demonstrates a full-stack application lifecycle: **VPC -> EC2 (Frontend/Backend) -> S3/DynamoDB (Storage)**.
 
-To complete your cloud deployment on AWS, follow these steps to replace local modules with AWS managed services.
+## 0. VPC (Virtual Private Cloud) - Networking First
+Before deploying your compute, you must set up the network.
+- **Action**: Create a VPC with at least one **Public Subnet**.
+- **Internet Gateway**: Attach an IGW to your VPC and update the Route Table to allow outbound traffic (`0.0.0.0/0`).
+- **Security Group**: Create a Security Group for your EC2 instance that allows **Inbound HTTP (Port 80/3000)** and **SSH (Port 22)**.
 
 ## 1. IAM (Identity and Access Management)
 Your EC2 instance needs permissions to talk to S3 and DynamoDB.
 - **Action**: Create an IAM Role for EC2.
-- **Policies**: `AmazonS3FullAccess` and `AmazonDynamoDBFullAccess` (or more restrictive custom policies).
-- **Execution**: Attach this role to your EC2 instance instead of hardcoding AWS access keys in `.env`.
+- **Policies**: `AmazonS3FullAccess` and `AmazonDynamoDBFullAccess`.
+- **Constraint**: The role should be attached **only to the EC2 instance**. Do not generate "User" Access Keys. This teaches the best practice of "Instance Profiles".
 
 ## 2. Amazon S3 (Simple Storage Service)
 The app currently saves images to the `/uploads` folder.
-- **AWS Integration**: Use the `@aws-sdk/client-s3` and `@aws-sdk/lib-storage` (Upload) packages.
-- **Code Change**: In `server.ts`, modify the `POST /api/profiles` route to upload the `req.file` buffer directly to your S3 bucket.
-- **URL**: Update the `imageUrl` in the database to point to the S3 Object URL or a CloudFront distribution.
+- **AWS Integration**: Use the `@aws-sdk/client-s3`.
+- **Flow**: User uploads image -> Express handles buffer -> Express uploads to S3 -> S3 returns Public URL.
 
 ## 3. Amazon DynamoDB or RDS
-The app current uses an in-memory `profiles` array.
-- **DynamoDB**: Use `@aws-sdk/client-dynamodb` and `@aws-sdk/lib-dynamodb`. Replace the `profiles.push()` and `profiles` array with `PutCommand` and `ScanCommand`.
-- **RDS (SQL)**: Set up a PostgreSQL or MySQL instance. Use `pg` or `mysql2` drivers in the backend to perform `INSERT` and `SELECT` queries.
+- **Metadata**: Store user name, age, and position. 
+- **RDS (PostgreSQL/MySQL)**: Good for relational data. Place RDS in a **Private Subnet** for better security (advanced student task).
 
 ## 4. Amazon EC2 (Elastic Compute Cloud)
-This is where your Node.js application will live.
-- **Action**: Launch a T2/T3 micro instance (Amazon Linux or Ubuntu).
-- **Setup**: Install Node.js, clone your repo, run `npm install`, then `npm run build` and `npm start`.
-- **Security Groups**: Ensure Port 80 (HTTP) or 3000 is open to your IP or the world.
+- **AMI**: Use a standard **Amazon Linux 2023** AMI.
+- **Deployment**:
+  1. SSH into instance.
+  2. Install Node.js & Git.
+  3. Clone repo and run `npm install`.
+  4. Run `npm run build`.
+  5. Start the server: `npm start`.
 
 ---
 

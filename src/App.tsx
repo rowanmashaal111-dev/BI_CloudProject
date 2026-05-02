@@ -312,6 +312,8 @@ export default function App() {
             </div>
             
             <div className="space-y-2 opacity-80 overflow-y-auto flex-1 text-xs">
+              <p><span className="text-slate-500">[10:14:00]</span> <span className="text-purple-400">VPC:</span> vpc-0a1b2c3d (10.0.0.0/16) initialized</p>
+              <p><span className="text-slate-500">[10:14:01]</span> <span className="text-purple-400">VPC:</span> Subnet 'public-1a' attached to IGW</p>
               <p><span className="text-slate-500">[10:14:02]</span> <span className="text-blue-400">INFO:</span> IAM Role: arn:aws:iam::student:role/AppRole validated</p>
               <p><span className="text-slate-500">[10:14:05]</span> <span className="text-blue-400">INFO:</span> RDS Instance: db-master.cf-west-1 connected</p>
               <p><span className="text-slate-500">[10:14:08]</span> <span className="text-blue-400">INFO:</span> S3 Bucket: student-project-images ready</p>
@@ -338,8 +340,10 @@ export default function App() {
 
       {/* Simplified Footer */}
       <footer className="h-14 bg-white border-t border-slate-200 flex items-center justify-between px-8 text-[10px] text-slate-400 shrink-0">
-        <div className="font-medium tracking-tight">STUDENT_PROJECT_SKELETON_V2.5.1</div>
+        <div className="font-medium tracking-tight">STUDENT_PROJECT_SKELETON_V2.6.0</div>
         <div className="flex gap-4 uppercase font-bold tracking-tighter">
+          <span className="hover:text-orange-500 cursor-help transition-colors">VPC</span>
+          <span className="text-slate-200">•</span>
           <span className="hover:text-orange-500 cursor-help transition-colors">IAM</span>
           <span className="text-slate-200">•</span>
           <span className="hover:text-orange-500 cursor-help transition-colors">S3</span>

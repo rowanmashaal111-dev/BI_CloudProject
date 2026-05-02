@@ -1,6 +1,6 @@
 {
   "name": "AWS-Ready Cloud Portfolio",
-  "description": "A full-stack project skeleton for students to learn AWS. Features user profile management with image uploads, ready for S3, DynamoDB/RDS, and EC2 deployment.",
+  "description": "A full-stack project skeleton for students to learn AWS. Features user profile management with image uploads, ready for VPC, S3, DynamoDB/RDS, and EC2 deployment.",
   "requestFramePermissions": [
     "camera"
   ],
